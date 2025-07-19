@@ -12,6 +12,7 @@ use Symfony\Component\HttpClient\NativeHttpClient;
 class ProfilerFactory implements ProfilerFactoryInterface
 {
     private const string PROFILER_STORE_API_ENDPOINT = 'api/profiler/store';
+
     public function create(string $url, string $appName): Profiler
     {
         return new Profiler(
