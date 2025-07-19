@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Velpl\BuggregatorProfilerBundle\Tests;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -45,9 +44,8 @@ class BuggregatorProfilerBundleTest extends KernelTestCase
         ?string $applicationName,
         bool $expectedEnabled,
         string $expectedProfilerUrl,
-        string $expectedApplicationName
-    ): void
-    {
+        string $expectedApplicationName,
+    ): void {
         $bundle = new BuggregatorProfilerBundle();
         $config = [
             'enabled' => $enabled,
@@ -91,12 +89,12 @@ class BuggregatorProfilerBundleTest extends KernelTestCase
         $builder = new ContainerBuilder();
         $instanceOf = [];
         $container = new ContainerConfigurator($builder, $loader, $instanceOf, 'path', 'file');
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The computed "profiler_url" of');
 
         $bundle->loadExtension($config, $container, $builder);
-
     }
+
     #[Test]
     public function configurationWithDisabledProfilerDoesntAddProfilerSubscriberToServiceContainer(): void
     {

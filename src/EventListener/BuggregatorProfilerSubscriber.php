@@ -19,9 +19,9 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly string $profilerUrl,
         private readonly string $applicationName,
-        private readonly ProfilerFactoryInterface $profilerFactory
-    )
-    {}
+        private readonly ProfilerFactoryInterface $profilerFactory,
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -44,5 +44,4 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     {
         $this->profiler?->end();
     }
-
 }
