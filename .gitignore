@@ -1,5 +1,4 @@
 /.idea/
-/vendor/
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
@@ -19,6 +18,5 @@
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
