@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    Velpl\BuggregatorProfilerBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'

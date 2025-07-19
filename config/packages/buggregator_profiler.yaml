@@ -1,0 +1,4 @@
+buggregator_profiler:
+    enabled: false
+    application_name: 'Symfony App'
+    profiler_url: 'http://127.0.0.1:9212'

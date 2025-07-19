@@ -1,0 +1,4 @@
+buggregator_profiler:
+  profiler_url: http://127.0.0.1
+  application_name: TestApp
+  enabled: false
