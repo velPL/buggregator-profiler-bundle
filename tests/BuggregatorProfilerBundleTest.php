@@ -14,6 +14,9 @@ use Velpl\BuggregatorProfilerBundle\BuggregatorProfilerBundle;
 
 class BuggregatorProfilerBundleTest extends KernelTestCase
 {
+    /**
+     * @return array<string, array<string, string|bool>>
+     */
     public static function configurationsProvider(): array
     {
         return [
