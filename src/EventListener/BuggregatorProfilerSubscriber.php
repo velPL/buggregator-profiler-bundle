@@ -26,8 +26,8 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', static::EVENT_HIGHEST_PRIORITY],
-            KernelEvents::TERMINATE => ['onKernelTerminate', static::EVENT_LOWEST_PRIORITY],
+            KernelEvents::REQUEST => ['onKernelRequest', self::EVENT_HIGHEST_PRIORITY],
+            KernelEvents::TERMINATE => ['onKernelTerminate', self::EVENT_LOWEST_PRIORITY],
         ];
     }
 

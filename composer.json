@@ -23,7 +23,8 @@
     },
     "extra": {
         "symfony": {
-            "require": "6.4.*"
+            "require": "6.4.*",
+            "allow-contrib": true
         },
         "allow-contrib": false
     },
@@ -45,7 +46,9 @@
         "symfony/phpunit-bridge": "^7.2",
         "symfony/yaml": "6.4.*",
         "symfony/stopwatch": "6.4.*",
-        "friendsofphp/php-cs-fixer": "^3.84"
+        "friendsofphp/php-cs-fixer": "^3.84",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0"
     },
     "scripts": {
         "auto-scripts": {
