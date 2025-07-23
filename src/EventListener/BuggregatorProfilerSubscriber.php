@@ -19,15 +19,15 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly string $profilerUrl,
         private readonly string $applicationName,
-        private readonly ProfilerFactoryInterface $profilerFactory
-    )
-    {}
+        private readonly ProfilerFactoryInterface $profilerFactory,
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', static::EVENT_HIGHEST_PRIORITY],
-            KernelEvents::TERMINATE => ['onKernelTerminate', static::EVENT_LOWEST_PRIORITY],
+            KernelEvents::REQUEST => ['onKernelRequest', self::EVENT_HIGHEST_PRIORITY],
+            KernelEvents::TERMINATE => ['onKernelTerminate', self::EVENT_LOWEST_PRIORITY],
         ];
     }
 
@@ -44,5 +44,4 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     {
         $this->profiler?->end();
     }
-
 }

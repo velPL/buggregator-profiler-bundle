@@ -42,8 +42,7 @@ class BuggregatorProfilerSubscriberTest extends KernelTestCase
             ->method('isMainRequest')
             ->willReturn(true);
 
-
-        $eventDispatcher->addSubscriber($container->get('buggregator_profiler.subscriber'));;
+        $eventDispatcher->addSubscriber($container->get('buggregator_profiler.subscriber'));
         $eventDispatcher->dispatch($event, KernelEvents::REQUEST);
         $eventDispatcher->dispatch($event, KernelEvents::TERMINATE);
 
@@ -65,6 +64,5 @@ class BuggregatorProfilerSubscriberTest extends KernelTestCase
         $container = self::getContainer();
 
         $this->assertFalse($container->has('buggregator_profiler.subscriber'));
-
     }
 }

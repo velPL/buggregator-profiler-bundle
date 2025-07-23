@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Velpl\BuggregatorProfilerBundle;
 
-use InvalidArgumentException;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -17,13 +17,14 @@ use Velpl\BuggregatorProfilerBundle\Profiler\ProfilerFactoryInterface;
 
 final class BuggregatorProfilerBundle extends AbstractBundle
 {
-
     private const string PROFILER_SUBSCRIBER_SERVICE_ID = 'buggregator_profiler.subscriber';
-    private const string PROFILER_FACTORY_SERVICE_ID = 'buggregator_profiler.factory';
+
     public function configure(DefinitionConfigurator $definition): void
     {
         // @codeCoverageIgnoreStart
-        $definition->rootNode()
+        /** @var ArrayNodeDefinition $node */
+        $node = $definition->rootNode();
+        $node
             ->children()
                 ->booleanNode('enabled')->defaultValue(false)->end()
                 ->scalarNode('application_name')->defaultValue('Symfony App')->end()
@@ -32,6 +33,9 @@ final class BuggregatorProfilerBundle extends AbstractBundle
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @param array<string, string|bool> $config
+     */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         if (str_ends_with($config['profiler_url'], '/')) {
@@ -42,8 +46,8 @@ final class BuggregatorProfilerBundle extends AbstractBundle
             'api/profiler/store']
         );
         // Ensure computed profiler_url is a valid url address
-        if (filter_var($profilerFullUrl, FILTER_VALIDATE_URL) === false) {
-            throw new InvalidArgumentException(sprintf('The computed "profiler_url" of %s is invalid url address', $profilerFullUrl));
+        if (false === filter_var($profilerFullUrl, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException(sprintf('The computed "profiler_url" of %s is invalid url address', $profilerFullUrl));
         }
         $isEnabled = boolval($config['enabled']);
 
@@ -53,7 +57,7 @@ final class BuggregatorProfilerBundle extends AbstractBundle
             ->set('buggregator_profiler.application_name', $config['application_name']);
 
         // Register subscriber only if enabled
-        if ($isEnabled === false) {
+        if (false === $isEnabled) {
             return;
         }
 
@@ -64,7 +68,6 @@ final class BuggregatorProfilerBundle extends AbstractBundle
         $definition->setArgument(1, '%buggregator_profiler.application_name%');
         $definition->setArgument(2, new Reference(ProfilerFactoryInterface::class));  // Passing the interface here
         $definition->addTag('kernel.event_subscriber');
-        //dd($definition);
 
         $builder->setDefinition(self::PROFILER_SUBSCRIBER_SERVICE_ID, $definition);
     }
