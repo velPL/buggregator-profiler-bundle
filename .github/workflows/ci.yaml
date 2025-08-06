@@ -23,7 +23,7 @@ jobs:
           tools: composer
 
       - name: Install Composer dependencies
-        run: make composer-dev
+        run: make composer-install
 
       - name: Cache vendor
         uses: actions/cache@v3
