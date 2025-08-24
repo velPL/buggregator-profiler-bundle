@@ -5,7 +5,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-/.env.*
+/.env.dev
 
 ###> symfony/framework-bundle ###
 /.env.local
