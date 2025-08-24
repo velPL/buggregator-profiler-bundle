@@ -83,4 +83,4 @@ jobs:
           tools: composer
 
       - name: Run PHP-CS-Fixer linter
-        run: make phpcs-analyze
+        run: make phpcs-report
