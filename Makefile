@@ -1,10 +1,11 @@
+COMPOSER ?= composer
 PHPUNIT = ./vendor/bin/phpunit
-PHPSTAN = vendor/bin/phpstan
-PHPCSFIXER = vendor/bin/php-cs-fixer
+PHPSTAN = ./vendor/bin/phpstan
+PHPCSFIXER = ./vendor/bin/php-cs-fixer
 PHPUNIT_FLAGS = --configuration ./phpunit.xml.dist
 
 # Commands
-.PHONY: phpstan phpcs-analyze phpcs-fix help php-test
+.PHONY: phpstan phpcs-report phpcs-fix php-test php-lint composer-install
 
 php-test:
 	$(PHPUNIT) $(PHPUNIT_FLAGS)
@@ -20,5 +21,5 @@ phpcs-fix:
 
 php-lint: phpcs-report phpstan
 
-composer-dev:
+composer-install:
 	@$(COMPOSER) install --no-interaction --no-progress --prefer-dist
