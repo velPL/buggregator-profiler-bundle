@@ -6,11 +6,12 @@ on:
 
 jobs:
   prepare-build:
-    name: Install Dependencies (PHP ${{ matrix.php-version }})
+    name: Install Dependencies (PHP ${{ matrix.php-version }}, Symfony ${{matrix.symfony-version}})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
+        symfony-version: ['6.4', '7.3']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,30 +24,33 @@ jobs:
           tools: composer:v2
 
       - name: Install Composer dependencies
-        run: make composer-install
+        run: |
+          composer require --no-update symfony/framework-bundle:^${{ matrix.symfony-version }} symfony/phpunit-bridge:^${{ matrix.symfony-version }} --dev
+          composer update --no-interaction --no-progress --prefer-dist
 
       - name: Cache vendor
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony-version }}
 
   phpstan:
-    name: PHPStan (PHP ${{ matrix.php-version }})
+    name: PHPStan (PHP ${{ matrix.php-version }}, Symfony ${{matrix.symfony-version}})
     needs: prepare-build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
+        symfony-version: ['6.4', '7.3']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Restore vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony-version }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -59,21 +63,22 @@ jobs:
         run: make phpstan
 
   phpcs:
-    name: PHP-CS-Fixer (PHP ${{ matrix.php-version }})
+    name: PHP-CS-Fixer (PHP ${{ matrix.php-version }}, Symfony ${{matrix.symfony-version}})
     needs: prepare-build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
+        symfony-version: ['6.4', '7.3']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Restore vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony-version }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -86,21 +91,22 @@ jobs:
         run: make phpcs-report
 
   phpunit:
-    name: PHP Unit (PHP ${{ matrix.php-version }})
+    name: PHP Unit (PHP ${{ matrix.php-version }}, Symfony ${{matrix.symfony-version}})
     needs: prepare-build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
+        symfony-version: ['6.4', '7.3']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Restore vendor cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.symfony-version }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
