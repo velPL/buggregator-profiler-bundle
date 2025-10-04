@@ -11,13 +11,21 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Velpl\BuggregatorProfilerBundle\CompilerPass\ConfigResolver;
 use Velpl\BuggregatorProfilerBundle\EventListener\BuggregatorProfilerSubscriber;
 use Velpl\BuggregatorProfilerBundle\Profiler\ProfilerFactory;
 use Velpl\BuggregatorProfilerBundle\Profiler\ProfilerFactoryInterface;
 
 final class BuggregatorProfilerBundle extends AbstractBundle
 {
-    private const string PROFILER_SUBSCRIBER_SERVICE_ID = 'buggregator_profiler.subscriber';
+    public const string PROFILER_SUBSCRIBER_SERVICE_ID = 'buggregator_profiler.subscriber';
+
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new ConfigResolver());
+    }
 
     public function configure(DefinitionConfigurator $definition): void
     {
@@ -45,10 +53,6 @@ final class BuggregatorProfilerBundle extends AbstractBundle
             $config['profiler_url'],
             'api/profiler/store']
         );
-        // Ensure computed profiler_url is a valid url address
-        if (false === filter_var($profilerFullUrl, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException(sprintf('The computed "profiler_url" of %s is invalid url address', $profilerFullUrl));
-        }
         $isEnabled = boolval($config['enabled']);
 
         $container->parameters()

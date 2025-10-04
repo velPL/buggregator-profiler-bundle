@@ -1,0 +1,4 @@
+buggregator_profiler:
+  profiler_url: '%env(string:BUGGREGATOR_BUNDLE_PROFILER_URL)%'
+  application_name: TestApp
+  enabled: true

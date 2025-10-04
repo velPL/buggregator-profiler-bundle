@@ -61,6 +61,9 @@ class BuggregatorProfilerBundleTest extends KernelTestCase
         $container = new ContainerConfigurator($builder, $loader, $instanceOf, 'path', 'file');
 
         $bundle->loadExtension($config, $container, $builder);
+        $bundle->build($builder);
+
+        $builder->compile();
 
         $this->assertTrue($builder->hasParameter('buggregator_profiler.profiler_url'));
         $this->assertSame(
@@ -92,10 +95,14 @@ class BuggregatorProfilerBundleTest extends KernelTestCase
         $builder = new ContainerBuilder();
         $instanceOf = [];
         $container = new ContainerConfigurator($builder, $loader, $instanceOf, 'path', 'file');
+
+        $bundle->loadExtension($config, $container, $builder);
+        $bundle->build($builder);
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The computed "profiler_url" of');
 
-        $bundle->loadExtension($config, $container, $builder);
+        $builder->compile();
     }
 
     #[Test]
@@ -117,6 +124,18 @@ class BuggregatorProfilerBundleTest extends KernelTestCase
         $container = self::getContainer();
 
         $this->assertSame('http://127.0.0.1/api/profiler/store', $container->getParameter('buggregator_profiler.profiler_url'));
+        $this->assertSame('TestApp', $container->getParameter('buggregator_profiler.application_name'));
+        $this->assertSame(true, $container->getParameter('buggregator_profiler.enabled'));
+        $this->assertTrue($container->has('buggregator_profiler.subscriber'));
+    }
+
+    #[Test]
+    public function configurationWithEnabledProfilerAndComputedProfilerUrlAddSProfilerSubscriberToServiceContainer(): void
+    {
+        self::bootKernel(['environment' => 'config_profiler_url_resolved_env']);
+        $container = self::getContainer();
+
+        $this->assertSame('http://resolved:1234/api/profiler/store', $container->getParameter('buggregator_profiler.profiler_url'));
         $this->assertSame('TestApp', $container->getParameter('buggregator_profiler.application_name'));
         $this->assertSame(true, $container->getParameter('buggregator_profiler.enabled'));
         $this->assertTrue($container->has('buggregator_profiler.subscriber'));

@@ -7,9 +7,20 @@ namespace Velpl\BuggregatorProfilerBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
-class Kernel extends BaseKernel
+final class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
+
+    /**
+     * @var string[]
+     */
+    private const array ENVS = [
+        'dev',
+        'test',
+        'config_disabled_env',
+        'config_enabled_env',
+        'config_profiler_url_resolved_env',
+    ];
 
     public function registerBundles(): iterable
     {
@@ -20,7 +31,7 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-        if (in_array($this->getEnvironment(), ['dev', 'test', 'config_disabled_env', 'config_enabled_env'], true)) {
+        if (in_array($this->getEnvironment(), self::ENVS, true)) {
             yield new BuggregatorProfilerBundle();
         }
     }
