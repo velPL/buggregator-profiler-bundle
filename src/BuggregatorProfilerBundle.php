@@ -36,7 +36,7 @@ final class BuggregatorProfilerBundle extends AbstractBundle
             ->children()
                 ->booleanNode('enabled')->defaultValue(false)->end()
                 ->scalarNode('application_name')->defaultValue('Symfony App')->end()
-                ->scalarNode('profiler_url')->isRequired()->defaultValue('http://buggregator:8000')->end()
+                ->scalarNode('profiler_url')->isRequired()->end()
             ->end();
         // @codeCoverageIgnoreEnd
     }
