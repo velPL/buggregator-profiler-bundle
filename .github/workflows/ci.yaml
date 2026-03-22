@@ -1,6 +1,7 @@
 name: Code integrity and analysis
 
 on:
+  workflow_dispatch:
   push:
   pull_request:
 
@@ -11,7 +12,10 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
-        symfony-version: ['6.4', '7.3']
+        symfony-version: ['6.4', '7.4', '8.0']
+        exclude:
+          - php-version: '8.3'
+            symfony-version: '8.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -25,7 +29,8 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer require --no-update symfony/framework-bundle:^${{ matrix.symfony-version }} symfony/phpunit-bridge:^${{ matrix.symfony-version }} --dev
+          export SYMFONY_REQUIRE=${{ matrix.symfony-version }}.*
+          composer config extra.symfony.require "${{ matrix.symfony-version }}.*"
           composer update --no-interaction --no-progress --prefer-dist
 
       - name: Cache vendor
@@ -41,7 +46,10 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
-        symfony-version: ['6.4', '7.3']
+        symfony-version: ['6.4', '7.4', '8.0']
+        exclude:
+          - php-version: '8.3'
+            symfony-version: '8.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -69,7 +77,10 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
-        symfony-version: ['6.4', '7.3']
+        symfony-version: ['6.4', '7.4', '8.0']
+        exclude:
+          - php-version: '8.3'
+            symfony-version: '8.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -97,7 +108,10 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
-        symfony-version: ['6.4', '7.3']
+        symfony-version: ['6.4', '7.4', '8.0']
+        exclude:
+          - php-version: '8.3'
+            symfony-version: '8.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
