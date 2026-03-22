@@ -1,6 +1,7 @@
 name: Code integrity and analysis
 
 on:
+  workflow_dispatch:
   push:
   pull_request:
 
