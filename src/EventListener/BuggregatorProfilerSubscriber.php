@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Velpl\BuggregatorProfilerBundle\EventListener;
 
 use SpiralPackages\Profiler\Profiler;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -27,7 +29,9 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', self::EVENT_HIGHEST_PRIORITY],
+            ConsoleEvents::COMMAND => ['onCommandStart', self::EVENT_HIGHEST_PRIORITY],
             KernelEvents::TERMINATE => ['onKernelTerminate', self::EVENT_LOWEST_PRIORITY],
+            ConsoleEvents::TERMINATE => ['onCommandTermination', self::EVENT_LOWEST_PRIORITY],
         ];
     }
 
@@ -40,8 +44,19 @@ class BuggregatorProfilerSubscriber implements EventSubscriberInterface
         $this->profiler->start();
     }
 
+    public function onCommandStart(ConsoleCommandEvent $commandEvent): void
+    {
+        $this->profiler = $this->profilerFactory->create($this->profilerUrl, $this->applicationName);
+        $this->profiler->start();
+    }
+
     public function onKernelTerminate(): void
     {
         $this->profiler?->end();
+    }
+
+    public function onCommandTermination(): void
+    {
+        $this->onKernelTerminate();
     }
 }

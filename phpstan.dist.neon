@@ -4,6 +4,16 @@ parameters:
         - config/
         - src/
         - tests/
+    ignoreErrors:
+        -
+            message: '#Return type of call to method PHPUnit\\Framework\\TestCase::createMock\(\) contains unresolvable type#'
+            path: tests/*
+        -
+            message: '#Parameter \#1 \$event of method Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcher::dispatch\(\) contains unresolvable type.#'
+            path: tests/*
+        -
+            message: '#Return type of call to method Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcher::dispatch\(\) contains unresolvable type.#'
+            path: tests/*
 
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
