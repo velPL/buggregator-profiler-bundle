@@ -6,8 +6,8 @@ and how to make the most out of it.
 
 ## Requirements
 
-- **PHP:** 8.3 or 8.4
-- **Symfony:** 6.4 or 7.4 or 8.0+ (for Symfony 8 PHP 8.4 is required)
+- **PHP:** 8.3, 8.4 or 8.5
+- **Symfony:** 6.4 or 7.4 or 8.0+ (for Symfony 8 PHP 8.4+ is required)
 
 ## Installation
 
