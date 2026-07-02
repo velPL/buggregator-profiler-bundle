@@ -1,4 +1,4 @@
-name: Code integrity and analysis
+name: Static linter analysis and tests run
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
         symfony-version: ['6.4', '7.4', '8.0']
         exclude:
           - php-version: '8.3'
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
         symfony-version: ['6.4', '7.4', '8.0']
         exclude:
           - php-version: '8.3'
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
         symfony-version: ['6.4', '7.4', '8.0']
         exclude:
           - php-version: '8.3'
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
         symfony-version: ['6.4', '7.4', '8.0']
         exclude:
           - php-version: '8.3'
